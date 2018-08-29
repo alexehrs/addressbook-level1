@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
+
 /*
  * NOTE : =============================================================
  * This class header comment below is brief because details of how to
@@ -860,22 +861,14 @@ public class AddressBook {
      */
     private static void sortAddressBook() {
         ArrayList<String[]> currentList = getAllPersonsInAddressBook();
+        System.out.print(currentList);
         Collections.sort(currentList);
-        clearAddressBook();
-//        for (int i = 0; i < currentList.size(); i++) {
+//        clearAddressBook();
+//        for (int i : currentList) {
 //            ALL_PERSONS.add(i);
 //        }
-        savePersonsToFile(currentList, storageFilePath);
+//        savePersonsToFile(currentList, storageFilePath);
     }
-
-
-/**
- private static String executeListAllPersonsInAddressBook() {
- ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
- showToUser(toBeDisplayed);
- return getMessageForPersonsDisplayedSummary(toBeDisplayed);
- }
- */
 
 
 
