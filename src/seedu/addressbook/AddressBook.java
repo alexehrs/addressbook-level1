@@ -90,6 +90,7 @@ public class AddressBook {
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
+    private static final String MESSAGE_SORT = "Addressbook sorted!";
 
     // These are the prefix strings to define the data type of a command parameter
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
@@ -104,6 +105,9 @@ public class AddressBook {
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
+
+    private static final String COMMAND_SORT = "sort";
+    //private static final String COMMAND_SORT_DESC = "Sorts the address book";
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
@@ -373,6 +377,8 @@ public class AddressBook {
             return executeAddPerson(commandArgs);
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
+        case COMMAND_SORT:
+            return executeSortAddressBook();
         case COMMAND_LIST_WORD:
             return executeListAllPersonsInAddressBook();
         case COMMAND_DELETE_WORD:
@@ -456,6 +462,8 @@ public class AddressBook {
         return getMessageForPersonsDisplayedSummary(personsFound);
     }
 
+
+
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
      *
@@ -464,6 +472,16 @@ public class AddressBook {
      */
     private static String getMessageForPersonsDisplayedSummary(ArrayList<String[]> personsDisplayed) {
         return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size());
+    }
+
+
+    /**
+     * Constructs a feedback message to summarise an operation that sorted the address book.
+     *
+     * @return message for addressbook sorted
+     */
+    private static String getMessageForAddressBookSorted() {
+        return String.format(MESSAGE_SORT);
     }
 
     /**
@@ -577,6 +595,17 @@ public class AddressBook {
         ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    /**
+     * Sorts the address book in ascending order
+     *
+     * @return feedback display message for the operation result
+     */
+    private static String executeSortAddressBook() {
+        sortAddressBook();
+        return getMessageForAddressBookSorted();
+
     }
 
     /**
@@ -825,6 +854,30 @@ public class AddressBook {
         ALL_PERSONS.clear();
         ALL_PERSONS.addAll(persons);
     }
+
+    /**
+     * Sorts the address book according to Name
+     */
+    private static void sortAddressBook() {
+        ArrayList<String[]> currentList = getAllPersonsInAddressBook();
+        Collections.sort(currentList);
+        clearAddressBook();
+//        for (int i = 0; i < currentList.size(); i++) {
+//            ALL_PERSONS.add(i);
+//        }
+        savePersonsToFile(currentList, storageFilePath);
+    }
+
+
+/**
+ private static String executeListAllPersonsInAddressBook() {
+ ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
+ showToUser(toBeDisplayed);
+ return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+ }
+ */
+
+
 
 
     /*
